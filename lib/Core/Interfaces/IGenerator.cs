@@ -2,16 +2,11 @@
 
 namespace Core.Interfaces
 {
-	public interface IGenerator<T> : IInvoker
+	public interface IGenerator<T> : IInvoker<T>
 	{
-		T Generate();
+		Return<T> Generate();
 
-		object IInvoker.Invoke(params object[] args)
-		{
-			if (args.Length > 0)
-				return new Error();
-
-			return Generate();
-		}
+		Return<T> IInvoker<T>.Invoke()
+			=> Generate();
 	}
 }

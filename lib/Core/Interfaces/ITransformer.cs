@@ -1,7 +1,12 @@
-﻿namespace Core.Interfaces
+﻿using Core.Types;
+
+namespace Core.Interfaces
 {
-	public interface ITransformer<TIn, TOut>
+	public interface ITransformer<TIn, TOut> : IInvoker<TIn, TOut>
 	{
-		TOut Transform(TIn arg);
+		Return<TOut> Transform(TIn arg);
+
+		Return<TOut> IInvoker<TIn, TOut>.Invoke(TIn arg)
+			=> Transform(arg);
 	}
 }
