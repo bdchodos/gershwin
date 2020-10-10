@@ -1,4 +1,5 @@
-﻿using Core.Types;
+﻿using Core.Internal;
+using Core.Types;
 
 namespace Core.Interfaces
 {
@@ -12,12 +13,7 @@ namespace Core.Interfaces
 		Return<TOut> Invoke();
 
 		Return IInvoker.Invoke(params object[] args)
-		{
-			if (args.Length != 0)
-				return new Error();
-
-			return Invoke();
-		}
+			=> ArgValidator.ValidateArgs(args);
 	}
 
 	public interface IInvoker<TIn, TOut> : IInvoker
@@ -25,15 +21,7 @@ namespace Core.Interfaces
 		Return<TOut> Invoke(TIn arg);
 
 		Return IInvoker.Invoke(params object[] args)
-		{
-			if (args.Length != 1)
-				return new Error();
-
-			if (!(args[0] is TIn arg))
-				return new Error();
-
-			return Invoke(arg);
-		}
+			=> ArgValidator.ValidateArgs<TIn>(args);
 	}
 
 	public interface IInvoker<TIn1, TIn2, TOut> : IInvoker
@@ -41,17 +29,6 @@ namespace Core.Interfaces
 		Return<TOut> Invoke(TIn1 arg1, TIn2 arg2);
 
 		Return IInvoker.Invoke(params object[] args)
-		{
-			if (args.Length != 2)
-				return new Error();
-
-			if (!(args[0] is TIn1 arg1))
-				return new Error();
-
-			if (!(args[1] is TIn2 arg2))
-				return new Error();
-
-			return Invoke(arg1, arg2);
-		}
+			=> ArgValidator.ValidateArgs<TIn1, TIn2>(args);
 	}
 }
